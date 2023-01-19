@@ -18,20 +18,26 @@ int main () {
     }
 
     unsigned long min;
-    char temp;
+    char temp[50] = {0, };
     for (int i = 0; i < n; i++) {
         min = strlen(p[i]);
         for (int j = i; j < n; j++) {
             if (min > strlen(p[j])) {
-                int k = 0;
-                while (p[i][k]) {
-                    temp = p[i][k];
-                    p[i][k] = p[j][k];
-                    p[j][k] = temp;
-                    k++;
-                    min = strlen(p[j]);
-                }
+                min = strlen(p[j]);
+                strcpy(temp, p[i]);
+                strcpy(p[i], p[j]);
+                strcpy(p[j], temp);
             }
+        }
+    }
+
+    for (int i = 0; i < n - 1; i++) {
+        if (!strcmp(p[i], p[i + 1])) {
+            for (int j = i + 1; j < n - 1; j++) {
+                strcpy(p[j], p[j + 1]);
+            }
+            n--;
+            p[n][0] = '\0';
         }
     }
 
@@ -40,13 +46,9 @@ int main () {
             if (strlen(p[j]) == strlen(p[j + 1])) {
                 for (int k = 0; p[j][k]; k++) {
                     if (p[j][k] > p[j + 1][k]) {
-                        int l = 0;
-                        while (p[j][l]) {
-                            temp = p[j][l];
-                            p[j][l] = p[j + 1][l];
-                            p[j + 1][l] = temp;
-                            l++;
-                        }
+                        strcpy(temp, p[j + 1]);
+                        strcpy(p[j + 1], p[j]);
+                        strcpy(p[j], temp);
                     }
                     break;
                 }
@@ -57,6 +59,11 @@ int main () {
     for (int i = 0; i < n; i++) {
         printf("%s\n", p[i]);
     }
+
+    for (int i = 0; i < n; i++) {
+        free(p[i]);
+    }
+    free(p);
 
     return 0;
 }
