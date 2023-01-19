@@ -36,6 +36,24 @@ int main () {
     }
 
     for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j <  n - 1; j++) {
+            if (strlen(p[j]) == strlen(p[j + 1])) {
+                for (int k = 0; p[j][k]; k++) {
+                    if (p[j][k] > p[j + 1][k]) {
+                        int l = 0;
+                        while (p[j][l]) {
+                            temp = p[j][l];
+                            p[j][l] = p[j + 1][l];
+                            p[j + 1][l] = temp;
+                            l++;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
     for (int i = 0; i < n; i++) {
         printf("%s\n", p[i]);
     }
