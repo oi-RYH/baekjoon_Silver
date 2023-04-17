@@ -1,75 +1,69 @@
 #include <stdio.h>
 #include <string.h>
 
-int isLeapYear(int YYYY);
+int nowMonth(char *month);
 
 int main () {
 
     char month[10] = {0};
-    int day = 0;
-    int YYYY = 0;
-    int HH = 0;
-    int MM = 0;
+    int year, day, hour, min;
 
-    double sec = 0;
+    int nowYear = 365;
 
-    scanf("%s %d, %d %d:%d", month, &day, &YYYY, &HH, &MM);
+    scanf("%s %d, %d %d:%d", month, &day, &year, &hour, &min);
 
-    if (month[0] == 'J') {
-        if (strlen(month) == 4) {
-            if (month[4] == 'e') { // 6월
-                sec = 151;
-            } else { // 7월
-                sec = 181;
-            }
-        }
-    } else if (month[0] == 'F') { // 2월
-        sec = 31;
-    } else if (month[0] == 'M') {
-        if (strlen(month) == 5) { // 3월
-            sec = 59;
-        } else { // 5월
-            sec = 120;
-        }
-    } else if (month[0] == 'A') {
-        if (strlen(month) == 5) { // 4월
-            sec = 90;
-        } else { // 8월
-            sec = 212;
-        }
-    } else if (month[0] == 'S') { // 9월
-        sec = 243;
-    } else if (month[0] == 'O') { // 10월
-        sec = 273;
-    } else if (month[0] == 'N') { // 11월
-        sec = 304;
-    } else { // 12월
-        sec = 334;
+    if ((year % 4 == 0) && (year % 100 != 0) || (year % 400 == 0)) {
+        nowYear = 366;
     }
 
-    if ((isLeapYear(YYYY)) && !((sec == 31) || (sec == 0))) {
-        sec += 1;
-    }
+    int monthNum = nowMonth(month);
+    double allMin = 0;
+    int mon[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-    sec += (day - 1);
-    sec *= (24 * 60);
-    sec += HH * 60 + MM;
-
-    if (isLeapYear(YYYY)) {
-        printf("%.15lf", 100 * sec / (366 * 1440));
+    if (monthNum == 1) {
+        allMin += day - 1;
     } else {
-        printf("%.15lf", 100 * sec / (365 * 1440));
+        allMin += day - 1;
+        for (int i = 0; i < monthNum - 1; i++) {
+            allMin += mon[i];
+        }
+        if ((monthNum > 2) && (nowYear == 366)) {
+            allMin += 1;
+        }
     }
+
+    allMin *= (24 * 60);
+    allMin += (hour * 60) + (min);
+    
+    printf("%.15lf", allMin / (nowYear * 24 * 60) * 100);
 
     return 0;
 }
 
-int isLeapYear(int YYYY) {
-
-    if ((YYYY % 4 == 0) && (YYYY % 100 != 0) || (YYYY % 400 == 0)) {
+int nowMonth(char *month) {
+    if (strcmp(month, "January") == 0) {
         return 1;
+    } else if (strcmp(month, "February") == 0) {
+        return 2;
+    } else if (strcmp(month, "March") == 0) {
+        return 3;
+    } else if (strcmp(month, "April") == 0) {
+        return 4;
+    } else if (strcmp(month, "May") == 0) {
+        return 5;
+    } else if (strcmp(month, "June") == 0) {
+        return 6;
+    } else if (strcmp(month, "July") == 0) {
+        return 7;
+    } else if (strcmp(month, "August") == 0) {
+        return 8;
+    } else if (strcmp(month, "September") == 0) {
+        return 9;
+    } else if (strcmp(month, "October") == 0) {
+        return 10;
+    } else if (strcmp(month, "November") == 0) {
+        return 11;
     } else {
-        return 0;
+        return 12;
     }
-
-}
+} 
